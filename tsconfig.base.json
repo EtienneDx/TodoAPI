@@ -14,7 +14,9 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@todo-application/todo-api": ["packages/todo-api/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
