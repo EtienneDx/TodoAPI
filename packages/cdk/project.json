@@ -5,7 +5,15 @@
   "targets": {
     "deploy": {
       "executor": "@ago-dev/nx-aws-cdk-v2:deploy",
-      "options": {}
+      "options": {},
+      "configurations": {
+        "dev": {
+          "stacks": "todo-stack-dev"
+        },
+        "prod": {
+          "stacks": "todo-stack-prod"
+        }
+      }
     },
     "destroy": {
       "executor": "@ago-dev/nx-aws-cdk-v2:destroy",
