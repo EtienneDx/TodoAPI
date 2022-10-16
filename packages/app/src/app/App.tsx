@@ -1,52 +1,63 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import styles from './App.module.scss';
-import NxWelcome from './nx-welcome';
 
-import { Route, Routes, Link } from 'react-router-dom';
+import { Route, Routes, Link, useNavigate } from 'react-router-dom';
+import { useLists } from './hooks/lists';
+import { useState } from 'react';
+import List from './List';
+import Loader from './Loader';
 
 export function App() {
+  const { lists, addList, loading } = useLists();
+  const [ newListName, setNewListName ] = useState("");
+  const navigate = useNavigate();
   return (
-    <>
-      <NxWelcome title="app" />
-      <div />
-
-      {/* START: routes */}
-      {/* These routes and navigation have been generated for you */}
-      {/* Feel free to move and update them to fit your needs */}
-      <br />
-      <hr />
-      <br />
-      <div role="navigation">
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/page-2">Page 2</Link>
-          </li>
-        </ul>
+    <div className={styles['root']}>
+      <div className={styles['header']}>
+        <h2 className={styles['title']} onClick={() => navigate("/")}>Todo Application</h2>
       </div>
       <Routes>
         <Route
           path="/"
           element={
-            <div>
-              This is the generated root route.{' '}
-              <Link to="/page-2">Click here for page 2.</Link>
+            <>
+              <div>This simple application aims to provide some todo lists.</div>
+              <div className={styles['fixedColumn']}>
+                <Link to="/new" className={styles['button']}>Create new list</Link>
+                {lists.map(listName => (
+                  <Link key={listName} to={`/list/${listName}`} className={styles['button']}>Go to {listName}</Link>
+                ))}
+              </div>
+            </>
+          }
+        />
+        <Route
+          path="/new"
+          element={
+            <div className={styles['fixedColumn']}>
+              <div className={styles['inputDiv']}>
+                <label htmlFor="newList">New list name</label>
+                <input id="newList" type="text" value={newListName} onChange={e => setNewListName(e.target.value)} />
+              </div>
+              <div onClick={() => {
+                if(!loading) {
+                  addList(newListName);
+                  setNewListName("");
+                  navigate("/");
+                }
+              }} className={styles[loading ? 'disabledButton' : 'button']}>
+                {loading ? <Loader/> : "Create"}
+              </div>
+              <Link to="/" className={styles['button']}>Cancel</Link>
             </div>
           }
         />
         <Route
-          path="/page-2"
-          element={
-            <div>
-              <Link to="/">Click here to go back to root page.</Link>
-            </div>
-          }
+          path="/list/:name"
+          element={<List/>}
         />
       </Routes>
-      {/* END: routes */}
-    </>
+    </div>
   );
 }
 

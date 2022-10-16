@@ -17,7 +17,18 @@
     },
     "destroy": {
       "executor": "@ago-dev/nx-aws-cdk-v2:destroy",
-      "options": {}
+      "options": {},
+      "configurations": {
+        "all": {
+          "stacks": "--all"
+        },
+        "dev": {
+          "stacks": "todo-stack-dev"
+        },
+        "prod": {
+          "stacks": "todo-stack-prod"
+        }
+      }
     },
     "bootstrap": {
       "executor": "@ago-dev/nx-aws-cdk-v2:bootstrap",

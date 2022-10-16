@@ -1,1 +1,140 @@
-/* Your styles goes here. */
+@mixin flexCol() {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin flexRow() {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+@mixin flexColCenter() {
+  @include flexCol();
+  align-items: center;
+}
+
+$primary: #695958;
+$secondary: #D3D0CB;
+
+@mixin button() {
+  color: black;
+  background-color: $secondary;
+  border-radius: 0.5em;
+  text-decoration: none;
+  text-align: center;
+  border: 0;
+  box-sizing: border-box;
+  &:hover {
+    cursor: pointer;
+    background-color: darken($secondary, 10%);
+  }
+}
+
+.root {
+  @include flexColCenter();
+}
+
+.header {
+  @include flexRow();
+  background-color: $primary;
+  margin: 0;
+  width: 100vw;
+  padding: 0 1em;
+  box-sizing: border-box;
+}
+
+.title {
+  align-items: flex-start;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.fixedColumn {
+  @include flexColCenter();
+  width: 200px;
+}
+
+.button {
+  @include button();
+  width: 100%;
+  padding: 0.5em 2em;
+  margin-top: 0.5em;
+}
+
+.disabledButton {
+  @include button();
+  width: 100%;
+  padding: 0.5em 2em;
+  margin-top: 0.5em;
+  &:hover {
+    cursor: not-allowed;
+  }
+}
+
+.inputDiv {
+  @include flexCol();
+  margin-top: 0.5em;
+  width: 100%;
+  input {
+    padding: 0.5em 0.5em;
+    border-radius: 0.5em;
+    border: px solid $secondary;
+  }
+}
+
+.itemDiv {
+  @include flexRow();
+  margin-top: 0.5em;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.item {
+  @include flexRow();
+}
+
+.itemButton {
+  @include button();
+  padding: 0.2em 0.4em;
+}
+
+.disabledItemButton {
+  @include button();
+  padding: 0.2em 0.4em;
+  &:hover {
+    cursor: not-allowed;
+  }
+}
+
+/***CSS loader: https://loading.io/css/ ***/
+.lds-dual-ring {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 16px;
+  height: 16px;
+  margin: 2px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
