@@ -34,7 +34,7 @@ const errors = {
 }
 
 export type ErrorCode = keyof typeof errors;
-export const ErrorCode: { [key in ErrorCode]: ErrorCode } = Object.keys(errors).reduce((acc, curr) => ({...acc, [curr]: curr}), {}) as { [key in ErrorCode]: ErrorCode };
+export const ErrorCode: { [key in ErrorCode]: key } = Object.keys(errors).reduce((acc, curr) => ({...acc, [curr]: curr}), {}) as { [key in ErrorCode]: key };
 
 export function success(body: unknown): APIGatewayProxyResult {
   return {

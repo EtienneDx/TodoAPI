@@ -79,7 +79,7 @@ export async function getHandler(event: APIGatewayEvent, context: Context): Prom
 export async function deleteHandler(event: APIGatewayEvent, context: Context): Promise<APIGatewayProxyResult> {
   const data = JSON.parse(event.body ?? "{}");
   if(data.type !== "item" || typeof(data.listName) !== "string" || typeof(data.item) !== "string") {
-    return error(ErrorCode.missing_parameter);
+    return error(ErrorCode.invalid_parameter);
   }
   const list = await getList(data.listName);
   if(list === null) {

@@ -22,7 +22,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/todo-api"],
+      "outputs": ["{workspaceRoot}/coverage/packages/todo-api"],
       "options": {
         "jestConfig": "packages/todo-api/jest.config.ts",
         "passWithNoTests": true

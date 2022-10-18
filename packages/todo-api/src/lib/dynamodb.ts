@@ -1,7 +1,15 @@
 import { DynamoDB } from "aws-sdk";
 import { CATEGORY, ListObject, RootObject } from "./todo-objects";
 
-const dynamo = new DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
+const config = process.env["JEST_WORKER_ID"] ? {
+  endpoint: 'localhost:8000',
+  sslEnabled: false,
+  region: 'local-env',
+} : {
+  apiVersion: '2012-08-10'
+};
+
+export const ddb = new DynamoDB.DocumentClient(config);
 
 const DYNAMO_DB_TABLE = process.env["DYNAMO_DB_TABLE"] ?? "todo-application-table";
 
@@ -13,7 +21,7 @@ const DEFAULT_ROOT: RootObject = {
 
 export async function getRoot() : Promise<RootObject> {
   try {
-    const response = await dynamo.get({
+    const response = await ddb.get({
       TableName: DYNAMO_DB_TABLE,
       Key: {
         Category: CATEGORY.ROOT,
@@ -30,7 +38,7 @@ export async function getRoot() : Promise<RootObject> {
 
 export async function getList(name: string): Promise<ListObject | null> {
   try {
-    const response = await dynamo.get({
+    const response = await ddb.get({
       TableName: DYNAMO_DB_TABLE,
       Key: {
         Category: CATEGORY.LIST,
@@ -46,7 +54,7 @@ export async function getList(name: string): Promise<ListObject | null> {
 }
 
 export async function putObject(item: RootObject | ListObject): Promise<void> {
-  await dynamo.put({
+  await ddb.put({
     TableName: DYNAMO_DB_TABLE,
     Item: item,
   }).promise();
