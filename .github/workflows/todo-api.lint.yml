@@ -1,0 +1,16 @@
+name: Todo APIs - Linting
+on:
+  workflow_call:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the Repo
+      - name: Checkout
+        uses: actions/checkout@v2
+      # Install dependencies
+      - name: Install dependencies
+        run: npm ci
+      - name: Lint project
+        run: npx nx run todo-api:lint

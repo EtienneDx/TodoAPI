@@ -3,7 +3,7 @@ import { getList, getRoot, putObject } from './dynamodb';
 import { error, ErrorCode, success } from './responses';
 import { CATEGORY } from './todo-objects';
 
-export async function createHandler(event: APIGatewayEvent, context: Context): Promise<APIGatewayProxyResult> {
+export async function createHandler(event: APIGatewayEvent, _context: Context): Promise<APIGatewayProxyResult> {
   const data = JSON.parse(event.body ?? "");
   if(typeof(data.type) !== "string") {
     return error(ErrorCode.missing_parameter);
@@ -57,7 +57,7 @@ export async function createHandler(event: APIGatewayEvent, context: Context): P
   });
 }
 
-export async function getHandler(event: APIGatewayEvent, context: Context): Promise<APIGatewayProxyResult> {
+export async function getHandler(event: APIGatewayEvent, _context: Context): Promise<APIGatewayProxyResult> {
   const data = event.queryStringParameters ?? {}
   if(typeof data["type"] !== "string" || (data["type"] === "list" && typeof data["name"] !== "string")) {
     return error(ErrorCode.missing_parameter);
@@ -76,7 +76,7 @@ export async function getHandler(event: APIGatewayEvent, context: Context): Prom
   return error(ErrorCode.invalid_parameter);
 }
 
-export async function deleteHandler(event: APIGatewayEvent, context: Context): Promise<APIGatewayProxyResult> {
+export async function deleteHandler(event: APIGatewayEvent, _context: Context): Promise<APIGatewayProxyResult> {
   const data = JSON.parse(event.body ?? "{}");
   if(data.type !== "item" || typeof(data.listName) !== "string" || typeof(data.item) !== "string") {
     return error(ErrorCode.invalid_parameter);

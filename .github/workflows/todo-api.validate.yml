@@ -1,0 +1,14 @@
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - .github/workflows/todo-api.*.yml
+      - ./packages/todo-api/**
+
+jobs:
+  lint:
+    uses: ./.github/workflows/todo-api.lint.yml
+  test:
+    uses: ./.github/workflows/todo-api.unit_tests.yml
+    secrets: inherit
