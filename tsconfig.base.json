@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@todo-application/todo-api": ["packages/todo-api/src/index.ts"]
+      "@todo-application/todo-api": ["packages/todo-api/src/index.ts"],
+      "lambda-decorator": ["packages/lambda-decorator/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

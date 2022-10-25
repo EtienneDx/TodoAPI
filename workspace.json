@@ -5,6 +5,7 @@
     "app": "packages/app",
     "app-e2e": "packages/app-e2e",
     "cdk": "packages/cdk",
+    "lambda-decorator": "packages/lambda-decorator",
     "todo-api": "packages/todo-api"
   }
 }
