@@ -1,0 +1,33 @@
+{
+  "name": "lambda-decorator-construct",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/lambda-decorator-construct/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/lambda-decorator-construct",
+        "main": "packages/lambda-decorator-construct/src/index.ts",
+        "tsConfig": "packages/lambda-decorator-construct/tsconfig.lib.json",
+        "assets": ["packages/lambda-decorator-construct/*.md"]
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/publish.mjs lambda-decorator-construct {args.ver} {args.tag}"
+      },
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/lambda-decorator-construct/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}
