@@ -1,14 +1,4 @@
-import { APIGatewayProxyResult } from "aws-lambda";
-
-const HEADERS = {
-  "Access-Control-Allow-Origin": "*",
-  "Content-Type": "application/json",
-};
-
-export interface ErrorBody {
-  error: string,
-  message: string,
-};
+import { JsonLambdaError } from "lambda-decorator";
 
 const errors = {
   missing_parameter: {
@@ -36,22 +26,12 @@ const errors = {
 export type ErrorCode = keyof typeof errors;
 export const ErrorCode: { [key in ErrorCode]: key } = Object.keys(errors).reduce((acc, curr) => ({...acc, [curr]: curr}), {}) as { [key in ErrorCode]: key };
 
-export function success(body: unknown): APIGatewayProxyResult {
-  return {
-    statusCode: 200,
-    headers: HEADERS,
-    body: JSON.stringify(body),
-  }
-}
 
-export function error(errorCode: ErrorCode): APIGatewayProxyResult {
-  const error = errors[errorCode];
-  return {
-    statusCode: error.status,
-    headers: HEADERS,
-    body: JSON.stringify({
-      errorCode,
-      message: error.message,
-    }),
-  };
+export class MyLambdaError extends JsonLambdaError {
+  constructor(code: ErrorCode) {
+    super(errors[code].status, {
+      errorCode: code,
+      message: errors[code].message,
+    });
+  }
 }

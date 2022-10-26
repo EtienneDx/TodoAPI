@@ -6,7 +6,6 @@ import { DynamoDB } from "aws-sdk";
 import { ddb, getList, getRoot, putObject } from "./dynamodb";
 import { clearTable } from "../test-utils/dynamodb-utils"
 import { CATEGORY, ListObject } from "./todo-objects";
-import { CreateTableInput } from "aws-sdk/clients/dynamodb";
 
 const dynamoDb = new DynamoDB({
   endpoint: 'localhost:8000',
@@ -14,30 +13,19 @@ const dynamoDb = new DynamoDB({
   region: 'local-env',
 });
 
-const table = {
-  TableName: TEST_TABLE,
-  KeySchema: [{AttributeName: 'Category', KeyType: 'HASH'}, {AttributeName: "SubCategory", KeyType: "RANGE"}],
-  AttributeDefinitions: [
-    {AttributeName: 'Category', AttributeType: 'S'},
-    {AttributeName: 'SubCategory', AttributeType: 'S'},
-  ],
-  ProvisionedThroughput: {ReadCapacityUnits: 1, WriteCapacityUnits: 1},
-} as CreateTableInput;
-
-
 describe('Dynamo DB', () => {
   beforeAll(async () => {
     jest.resetModules() // Clear the cache
     try {
       await dynamoDb.createTable({
-  TableName: TEST_TABLE,
-  KeySchema: [{AttributeName: 'Category', KeyType: 'HASH'}, {AttributeName: "SubCategory", KeyType: "RANGE"}],
-  AttributeDefinitions: [
-    {AttributeName: 'Category', AttributeType: 'S'},
-    {AttributeName: 'SubCategory', AttributeType: 'S'},
-  ],
-  ProvisionedThroughput: {ReadCapacityUnits: 1, WriteCapacityUnits: 1},
-}).promise();
+        TableName: TEST_TABLE,
+        KeySchema: [{AttributeName: 'Category', KeyType: 'HASH'}, {AttributeName: "SubCategory", KeyType: "RANGE"}],
+        AttributeDefinitions: [
+          {AttributeName: 'Category', AttributeType: 'S'},
+          {AttributeName: 'SubCategory', AttributeType: 'S'},
+        ],
+        ProvisionedThroughput: {ReadCapacityUnits: 1, WriteCapacityUnits: 1},
+      }).promise();
     }
     catch(e: unknown) {
       console.warn("Couldn't create table. Is DynamoDB local running on prort 8000? `docker run -p 8000:8000 amazon/dynamodb-local`\n", e);
@@ -47,10 +35,12 @@ describe('Dynamo DB', () => {
   afterAll(async () => {
     process.env = OLD_ENV; // Restore old environment
     try {
-      await dynamoDb.deleteTable(table).promise();
+      await dynamoDb.deleteTable({
+        TableName: TEST_TABLE,
+      }).promise();
     }
     catch(e: unknown) {
-      console.warn("Couldn't create table", e);
+      console.warn("Couldn't delete table", e);
     }
   });
 

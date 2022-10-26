@@ -3,8 +3,10 @@ jest.mock("./dynamodb");
 import { APIGatewayProxyEvent, Context } from "aws-lambda";
 import { getRoot, getList, putObject } from "./dynamodb"
 import { ErrorCode } from "./responses";
-import { createHandler, deleteHandler, getHandler } from "./todo-api";
+import todoApiHandlers from "./todo-api";
 import { CATEGORY, ListObject, RootObject } from "./todo-objects";
+
+const { createHandler, deleteHandler, getHandler } = todoApiHandlers;
 
 const mockGetRoot = getRoot as unknown as jest.Mock<Promise<RootObject>>;
 const mockGetList = getList as unknown as jest.Mock<Promise<ListObject | null>>;
@@ -210,7 +212,7 @@ describe('todoApi', () => {
       } as APIGatewayProxyEvent, {} as Context);
 
       expect(data.statusCode).toBe(400);
-      expect(JSON.parse(data.body).errorCode).toBe(ErrorCode.invalid_parameter);
+      expect(typeof JSON.parse(data.body).message).toBe("string");
       expect(putObject).toBeCalledTimes(0);
     });
   })
